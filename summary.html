@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Summary | Abedemic</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<main class="app">
+		<header class="brand">ABEDEMIC</header>
+		<div class="page-tab">Summary</div>
+		<div class="layout">
+			<aside class="sidebar">
+				<img class="profile-image" src="img/rimuru-mascot.jpeg" alt="Rimuru mascot">
+				<div class="profile-name">Profile</div>
+				<button class="side-link" type="button">
+					<img src="img/folder-pic.jpeg" alt="">Setting
+				</button>
+				<button class="side-link" type="button">About Us</button>
+			</aside>
+			<section class="content summary-content">
+				<img class="page-avatar" src="img/rimuru-mascot.jpeg" alt="">
+
+				<div id="summaryUpload" class="summary-stage">
+					<label class="dropzone" for="summaryFile">
+						<img src="img/folder-pic.jpeg" alt="">
+						<span>DROP FILE HERE</span>
+					</label>
+					<input type="file" id="summaryFile" hidden>
+					<button type="button" class="login-button" id="summaryGenerate" disabled>Generate Summary</button>
+				</div>
+
+				<div id="summaryResult" class="summary-stage" hidden>
+					<div class="result-panel">
+						<h2>Ringkasan Materi</h2>
+						<p id="summaryText">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+					</div>
+					<button type="button" class="login-button" id="summaryReset">Ringkas File Lain</button>
+				</div>
+			</section>
+		</div>
+	</main>
+	<script>
+		const fileInput = document.getElementById('summaryFile');
+		const generateBtn = document.getElementById('summaryGenerate');
+		const uploadStage = document.getElementById('summaryUpload');
+		const resultStage = document.getElementById('summaryResult');
+
+		fileInput.addEventListener('change', () => {
+			generateBtn.disabled = !fileInput.files.length;
+		});
+
+		generateBtn.addEventListener('click', () => {
+			// TODO Fase 3: kirim fileInput.files[0] ke api/summary.php (proxy Gemini)
+			uploadStage.hidden = true;
+			resultStage.hidden = false;
+		});
+
+		document.getElementById('summaryReset').addEventListener('click', () => {
+			fileInput.value = '';
+			generateBtn.disabled = true;
+			resultStage.hidden = true;
+			uploadStage.hidden = false;
+		});
+	</script>
+</body>
+</html>

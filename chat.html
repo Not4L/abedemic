@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Ask Our AI | Abedemic</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<main class="app">
+		<header class="brand">ABEDEMIC</header>
+		<div class="page-tab">Ask Our All</div>
+		<div class="layout">
+			<aside class="sidebar">
+				<img class="profile-image" src="img/rimuru-mascot.jpeg" alt="Rimuru mascot">
+				<div class="profile-name">Profile</div>
+				<button class="side-link" type="button">
+					<img src="img/folder-pic.jpeg" alt="">Setting
+				</button>
+				<button class="side-link" type="button">About Us</button>
+			</aside>
+			<section class="content chat-content">
+				<div class="chat-log" id="chatLog">
+					<div class="msg msg-ai">
+						<img class="chat-mascot" src="img/crocodile-mascot.jpeg" alt="">
+						<p>Halo! Tanyakan apa saja soal materi belajarmu, aku bantu jawab.</p>
+					</div>
+				</div>
+				<form class="chat-form" id="chatForm">
+					<input type="text" id="chatInput" placeholder="Tanyakan Apa Saja..." autocomplete="off" required>
+					<button type="submit" class="chat-send" aria-label="Kirim">➤</button>
+				</form>
+			</section>
+		</div>
+	</main>
+	<script>
+		const log = document.getElementById('chatLog');
+		const form = document.getElementById('chatForm');
+		const input = document.getElementById('chatInput');
+
+		function addMessage(text, sender) {
+			const row = document.createElement('div');
+			row.className = 'msg msg-' + sender;
+			if (sender === 'ai') {
+				row.innerHTML = '<img class="chat-mascot" src="img/crocodile-mascot.jpeg" alt=""><p></p>';
+				row.querySelector('p').textContent = text;
+			} else {
+				row.innerHTML = '<p></p>';
+				row.querySelector('p').textContent = text;
+			}
+			log.appendChild(row);
+			log.scrollTop = log.scrollHeight;
+		}
+
+		form.addEventListener('submit', (e) => {
+			e.preventDefault();
+			const text = input.value.trim();
+			if (!text) return;
+			addMessage(text, 'user');
+			input.value = '';
+			// TODO Fase 3: ganti dengan fetch ke api/chat.php (proxy Gemini)
+			setTimeout(() => addMessage('(dummy) Jawaban AI akan tampil di sini setelah backend Gemini tersambung.', 'ai'), 500);
+		});
+	</script>
+</body>
+</html>
