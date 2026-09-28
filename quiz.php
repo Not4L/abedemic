@@ -1,42 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Quiz Time | Abedemic</title>
-	<link rel="stylesheet" href="styles.css">
-</head>
-<body>
-	<main class="app">
-		<header class="brand">ABEDEMIC</header>
-		<div class="page-tab">Quiz Time</div>
-		<div class="layout">
-			<aside class="sidebar">
-				<img class="profile-image" src="img/rimuru-mascot.jpeg" alt="Rimuru mascot">
-				<div class="profile-name">Profile</div>
-				<button class="side-link" type="button">
-					<img src="img/folder-pic.jpeg" alt="">Setting
-				</button>
-				<button class="side-link" type="button">About Us</button>
-			</aside>
-			<section class="content quiz-content">
-				<img class="page-avatar" src="img/rimuru-mascot.jpeg" alt="">
+<?php
+$pageTitle = 'Quiz Time';
+$tab = 'Quiz Time';
+$contentClass = 'quiz-content';
+require __DIR__ . '/partials/header.php';
+?>
+			<img class="page-avatar" src="img/rimuru-mascot.jpeg" alt="">
 
-				<div id="quizQuestion" class="quiz-stage">
-					<div class="quiz-box" id="quizQuestionText"></div>
-					<div class="quiz-options" id="quizOptions"></div>
-				</div>
+			<div id="quizQuestion" class="quiz-stage">
+				<div class="quiz-box" id="quizQuestionText"></div>
+				<div class="quiz-options" id="quizOptions"></div>
+			</div>
 
-				<div id="quizExplain" class="quiz-stage" hidden>
-					<div class="quiz-explain-box">
-						<h3>Explanation:</h3>
-						<p id="quizExplainText"></p>
-					</div>
-					<button type="button" class="login-button" id="quizNext">Next Question</button>
+			<div id="quizExplain" class="quiz-stage" hidden>
+				<div class="quiz-explain-box">
+					<h3>Explanation:</h3>
+					<p id="quizExplainText"></p>
 				</div>
-			</section>
-		</div>
-	</main>
+				<button type="button" class="login-button" id="quizNext">Next Question</button>
+			</div>
 	<script>
 		// TODO Fase 3: array ini nanti diisi hasil generate Gemini, bukan dummy
 		const questions = [
@@ -79,5 +60,4 @@
 
 		renderQuestion();
 	</script>
-</body>
-</html>
+<?php require __DIR__ . '/partials/footer.php'; ?>

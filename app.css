@@ -1,0 +1,159 @@
+/* Tambahan untuk tahap backend. Dimuat SETELAH styles.css (styles.css tidak diubah). */
+
+/* ---------- Pesan error di form login/register ---------- */
+.form-error {
+	margin-bottom: 22px;
+	padding: 14px 18px;
+	border: 3px solid #f0b8a8;
+	border-radius: 16px;
+	background: #6b1f14;
+	font-family: var(--font-body);
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 1.5;
+}
+
+.form-error p {
+	margin: 0;
+}
+
+.form-error p + p {
+	margin-top: 6px;
+}
+
+/* ---------- Sidebar: Profile jadi tombol ---------- */
+.profile-btn {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: auto;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	transition: transform 0.15s ease;
+}
+
+.profile-btn:hover,
+.profile-btn:focus-visible {
+	transform: translateY(-3px);
+}
+
+.profile-btn .profile-name {
+	margin: 8px 0 0;
+}
+
+/* ---------- Sambutan ---------- */
+.welcome-name {
+	color: #cdfd6d;
+}
+
+/* ---------- Modal (Profile & Setting) ---------- */
+.modal {
+	position: fixed;
+	z-index: 10;
+	inset: 0;
+	display: grid;
+	place-items: center;
+	padding: 20px;
+	background: rgba(10, 8, 20, 0.7);
+}
+
+.modal[hidden] {
+	display: none;
+}
+
+.modal-box {
+	position: relative;
+	width: min(420px, 100%);
+	padding: 34px 30px 28px;
+	border: 6px solid var(--orange);
+	border-radius: 24px;
+	background: var(--panel);
+	box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.4);
+	text-align: center;
+}
+
+.modal-box h2 {
+	margin: 0 0 22px;
+	font-size: 18px;
+	line-height: 1.5;
+	word-break: break-word;
+}
+
+.modal-close {
+	position: absolute;
+	top: 10px;
+	right: 14px;
+	border: 0;
+	background: transparent;
+	font-size: 28px;
+	line-height: 1;
+}
+
+.modal-avatar {
+	width: 96px;
+	height: 96px;
+	margin-bottom: 8px;
+	object-fit: contain;
+	image-rendering: pixelated;
+	mix-blend-mode: screen;
+}
+
+.modal-info {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 12px 16px;
+	margin: 0 0 26px;
+	text-align: left;
+	font-size: 11px;
+}
+
+.modal-info dt {
+	color: #cdfd6d;
+}
+
+.modal-info dd {
+	margin: 0;
+	font-family: var(--font-body);
+	font-size: 15px;
+	font-weight: 700;
+	word-break: break-word;
+}
+
+.modal-label {
+	display: block;
+	margin-bottom: 10px;
+	text-align: left;
+	font-size: 11px;
+}
+
+.modal-select {
+	width: 100%;
+	margin-bottom: 22px;
+	padding: 14px 16px;
+	border: 4px solid var(--teal);
+	border-radius: 16px;
+	background: var(--slate);
+	color: var(--cream);
+	font-size: 13px;
+}
+
+.modal .login-button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+}
+
+/* ---------- Penyesuaian layar kecil ---------- */
+@media (max-width: 900px) {
+	.profile-btn {
+		flex-direction: row;
+		gap: 10px;
+		margin-bottom: 0;
+	}
+
+	.profile-btn .profile-name {
+		margin: 0;
+	}
+}
