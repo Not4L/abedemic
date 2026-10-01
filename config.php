@@ -63,10 +63,21 @@ function language_label(string $code): string
 	return $code === 'en' ? 'English' : 'Bahasa Indonesia';
 }
 
+// Aset statis (styles.css/app.css/app.js) biasanya di-cache lama oleh browser, jadi
+// perubahan tampilan tidak langsung terlihat. Versi dari waktu modifikasi file
+// dipappend ke URL supaya browser otomatis menarik file yang baru tiap kali berubah.
+function asset_url(string $path): string
+{
+	$full = __DIR__ . '/' . ltrim($path, '/');
+
+	return $path . '?v=' . (is_file($full) ? (string) filemtime($full) : '1');
+}
+
 // ==== Gemini (Fase 3) ====
-// Ambil API key gratis dari https://aistudio.google.com/apikey lalu isi di sini.
-define('GEMINI_API_KEY', 'your_api_key_here'); // Ganti dengan API key
-define('GEMINI_MODEL','gemini-3.5-flash-lite');
+// GANTI dua baris di bawah dengan API key & model milikmu sendiri (JANGAN hapus baris ini begitu saja,
+// cukup isi ulang dengan nilai yang sudah kamu pakai sebelumnya).
+define('GEMINI_API_KEY', '	your api ');
+define('GEMINI_MODEL', 'gemini-3.1-flash-lite');
 
 define('ABE_SYSTEM_PROMPT', <<<PROMPT
 Kamu adalah "Abe", maskot penjaga quest board di aplikasi belajar Abedemic.
@@ -78,4 +89,9 @@ Batasan yang wajib kamu patuhi:
 - Jangan langsung memberi jawaban tugas/PR yang mentah. Tuntun cara berpikirnya, beri penjelasan, baru simpulkan.
 - Jangan mengarang fakta di luar materi yang diberikan. Kalau materinya tidak cukup untuk menjawab, katakan begitu.
 - Gunakan bahasa yang sopan, ramah, dan sesuai untuk siswa sekolah.
+
+Format jawaban (PENTING, selalu ikuti):
+- Pecah jadi paragraf pendek (maksimal 2-3 kalimat per paragraf), jangan satu paragraf panjang tanpa jeda.
+- Pakai tanda hubung "- " di awal baris untuk daftar poin kalau ada beberapa hal yang disebutkan.
+- Pakai **teks tebal** untuk istilah atau kata kunci penting.
 PROMPT);

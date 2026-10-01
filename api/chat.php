@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../history.php';
 require_once __DIR__ . '/../gemini.php';
 
 header('Content-Type: application/json');
@@ -25,12 +26,18 @@ if (mb_strlen($message) > 2000) {
 	exit;
 }
 
-// Riwayat singkat per sesi, supaya AI ingat konteks 6 pesan terakhir saja (hemat token).
-$_SESSION['chat_history'] = $_SESSION['chat_history'] ?? [];
+// Obrolan tujuan: cek dulu apakah benar milik user ini, kalau tidak -> pakai obrolan terakhir.
+$requestedId = (int) ($input['conversation_id'] ?? 0);
+$conversationId = find_conversation($user['id'], $requestedId) ? $requestedId : current_conversation_id($user['id']);
+
+// Konteks dari 6 pesan terakhir di obrolan itu, supaya AI ingat percakapan sebelumnya.
+$recent = $conversationId > 0
+	? get_conversation_messages($user['id'], $conversationId, 6)
+	: get_chat_history($user['id'], 6);
 
 $parts = [];
-foreach (array_slice($_SESSION['chat_history'], -6) as $turn) {
-	$parts[] = ['text' => $turn['role'] . ': ' . $turn['text']];
+foreach ($recent as $turn) {
+	$parts[] = ['text' => ($turn['role'] === 'user' ? 'Siswa' : 'Abe') . ': ' . $turn['message']];
 }
 $parts[] = ['text' => 'Siswa (' . $user['username'] . '): ' . $message];
 
@@ -45,8 +52,15 @@ try {
 	exit;
 }
 
-$_SESSION['chat_history'][] = ['role' => 'Siswa', 'text' => $message];
-$_SESSION['chat_history'][] = ['role' => 'Abe', 'text' => $reply];
-$_SESSION['chat_history'] = array_slice($_SESSION['chat_history'], -20);
+save_chat_message($user['id'], 'user', $message, $conversationId);
+save_chat_message($user['id'], 'ai', $reply, $conversationId);
 
-echo json_encode(['reply' => $reply]);
+// Pesan pertama di obrolan menentukan judulnya, biar mudah searched di Riwayat.
+if ($conversationId > 0) {
+	$conversation = find_conversation($user['id'], $conversationId);
+	if ($conversation && count($recent) === 0) {
+		rename_conversation($user['id'], $conversationId, $message);
+	}
+}
+
+echo json_encode(['reply' => $reply, 'conversation_id' => $conversationId]);

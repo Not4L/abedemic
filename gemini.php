@@ -15,8 +15,16 @@ class GeminiException extends Exception {}
  */
 function call_gemini(string $systemPrompt, array $parts, ?array $responseSchema = null): string
 {
-	if (GEMINI_API_KEY === '' || GEMINI_API_KEY === 'ISI_API_KEY_GEMINI_DI_SINI') {
+	// trim() jaga-jaga kalau ada spasi/baris baru nyasar saat API key atau nama model di-paste ke config.php,
+	// karena itu bisa bikin cURL menolak URL/header dengan pesan yang membingungkan.
+	$apiKey = trim(GEMINI_API_KEY);
+	$model = trim(GEMINI_MODEL);
+
+	if ($apiKey === '' || in_array($apiKey, ['ISI_API_KEY_GEMINI_DI_SINI', 'YOUR_API_KEY_HERE'], true)) {
 		throw new GeminiException('GEMINI_API_KEY belum diisi di config.php.');
+	}
+	if ($model === '') {
+		throw new GeminiException('GEMINI_MODEL kosong di config.php.');
 	}
 
 	$generationConfig = [
@@ -38,7 +46,11 @@ function call_gemini(string $systemPrompt, array $parts, ?array $responseSchema 
 		'generationConfig' => $generationConfig,
 	];
 
-	$url = 'https://generativelanguage.googleapis.com/v1beta/models/' . GEMINI_MODEL . ':generateContent';
+	$url = 'https://generativelanguage.googleapis.com/v1beta/models/' . rawurlencode($model) . ':generateContent';
+
+	if (filter_var($url, FILTER_VALIDATE_URL) === false) {
+		throw new GeminiException('URL Gemini tidak valid, cek GEMINI_MODEL di config.php (jangan ada spasi/baris baru).');
+	}
 
 	$ch = curl_init($url);
 	curl_setopt_array($ch, [
@@ -46,7 +58,7 @@ function call_gemini(string $systemPrompt, array $parts, ?array $responseSchema 
 		CURLOPT_POST => true,
 		CURLOPT_HTTPHEADER => [
 			'Content-Type: application/json',
-			'x-goog-api-key: ' . GEMINI_API_KEY,
+			'x-goog-api-key: ' . $apiKey,
 		],
 		CURLOPT_POSTFIELDS => json_encode($payload),
 		CURLOPT_TIMEOUT => 60,

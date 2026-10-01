@@ -61,8 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Create Account | Abedemic</title>
-	<link rel="stylesheet" href="styles.css">
-	<link rel="stylesheet" href="app.css">
+	<link rel="stylesheet" href="<?= e(asset_url('styles.css')) ?>">
+	<link rel="stylesheet" href="<?= e(asset_url('app.css')) ?>">
 </head>
 <body class="login-page register-page">
 	<main class="login-shell register-shell">

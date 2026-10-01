@@ -273,15 +273,6 @@ a {
 	font-size: 19px;
 }
 
-.side-link img {
-	width: 24px;
-	height: 24px;
-	margin-right: 8px;
-	vertical-align: middle;
-	object-fit: contain;
-	mix-blend-mode: screen;
-}
-
 .mascot-strip {
 	display: flex;
 	gap: 8px;
@@ -442,56 +433,73 @@ a {
 }
 
 /* ========== Chat page ========== */
+.chat-topbar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	margin-bottom: 18px;
+}
+
+.chat-title {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: var(--cream);
+	font-family: var(--font-body);
+	font-size: 14px;
+	font-weight: 700;
+}
+
 .chat-log {
 	flex: 1;
 	min-height: 0;
 	display: flex;
 	flex-direction: column;
-	gap: 18px;
-	padding: 4px 8px 12px;
+	gap: 30px;
+	padding: 4px 8px 18px;
 	overflow-y: auto;
 }
 
 .msg {
 	display: flex;
-	align-items: flex-end;
+	align-items: flex-start;
 	gap: 12px;
-	max-width: 62%;
+	max-width: 78%;
 }
 
-.msg p {
-	margin: 0;
-	padding: 16px 22px;
-	border: 3px solid var(--line);
-	border-radius: 22px;
-	box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.35);
-	color: #111;
+/* Teks pesan biasa, tanpa kotak/gelembung. Jarak antar giliran pflege lewat
+   .chat-log { gap: 30px } di atas supaya pertanyaan dan jawaban jelas terpisah. */
+.msg > .msg-text {
+	min-width: 0;
+	color: var(--cream);
 	font-family: var(--font-body);
 	font-size: 16px;
-	line-height: 1.5;
+	line-height: 1.65;
+	overflow-wrap: anywhere;
 }
 
 .msg-ai {
 	align-self: flex-start;
-}
-
-.msg-ai p {
-	background: #416f6f;
-	color: var(--cream);
+	justify-content: flex-start;
 }
 
 .msg-user {
 	align-self: flex-end;
+	justify-content: flex-end;
 }
 
-.msg-user p {
-	background: var(--green);
+.msg-user > .msg-text {
+	text-align: right;
+	color: #cdfd6d;
 }
 
 .chat-mascot {
 	flex-shrink: 0;
-	width: 72px;
-	height: 72px;
+	width: 64px;
+	height: 64px;
 	object-fit: contain;
 	image-rendering: pixelated;
 	mix-blend-mode: screen;
@@ -587,6 +595,9 @@ a {
 	object-fit: contain;
 }
 
+/* Font dan ukuran ditaruh di container, BUKAN hanya di <p>. Kalau cuma <p> yang
+   diatur, elemen markdown lain seperti <ul>/<li> tidak mewarisi apa pun dan jatuh
+   ke font pixel bawaan body, sehingga teks ringkasan terlihat campur. */
 .result-panel {
 	width: 100%;
 	padding: 28px 32px;
@@ -595,6 +606,10 @@ a {
 	background: var(--paper);
 	color: #111;
 	text-align: left;
+	font-family: var(--font-body);
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 1.7;
 }
 
 .result-panel h2 {
@@ -603,13 +618,14 @@ a {
 	font-size: 22px;
 }
 
+/* Rata kiri, bukan justify: justify bikin jarak antar kata aneh kalau ada baris panjang. */
 .result-panel p {
 	margin: 0;
 	font-family: var(--font-body);
 	font-size: 16px;
 	font-weight: 700;
 	line-height: 1.7;
-	text-align: justify;
+	text-align: left;
 }
 
 .quiz-box,
@@ -620,22 +636,27 @@ a {
 	border-radius: 24px;
 	background: var(--violet);
 	text-align: left;
-}
-
-.quiz-box {
-	min-height: 130px;
 	font-family: var(--font-body);
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: 700;
 	line-height: 1.6;
 }
 
+.quiz-box {
+	min-height: 130px;
+	font-size: 18px;
+}
+
+/* Label "Explanation:" tetap font pixel supaya tetap terbaca sebagai judul,
+   sementara isi penjelasan di bawahnya memakai font body. */
 .quiz-explain-box h3 {
 	margin: 0 0 14px;
+	font-family: var(--font-pixel);
 	font-size: 16px;
 }
 
-.quiz-explain-box p {
+.quiz-explain-box p,
+.quiz-explain-text {
 	margin: 0;
 	font-family: var(--font-body);
 	font-size: 16px;
@@ -730,7 +751,7 @@ a {
 	}
 
 	.msg {
-		max-width: 90%;
+		max-width: 92%;
 	}
 }
 
